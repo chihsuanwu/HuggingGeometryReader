@@ -31,9 +31,11 @@ public struct HuggingGeometryReader<Content: View>: View {
 struct HuggingGeometryReader_Previews: PreviewProvider {
     static var previews: some View {
         HuggingGeometryReader { size in
-            Text("Hello, \(size.width), \(size.height))")
+            Text("Hello, height is \(size.height)")
+                .padding()
                 .background(Color.green)
         }
+        .background(Color.red)
         .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
     }
 }
