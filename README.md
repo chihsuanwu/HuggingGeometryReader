@@ -91,8 +91,6 @@ A common use case is to build a percentage layout:
 
 <img align="left" src="Img/img3.png" style="height:480px;margin-left:20px;margin-right:40px"/>
 
-<div style="height:480px;" >
-
 ``` swift
 
 HorizontalGeometryReader { width in
@@ -112,7 +110,7 @@ HorizontalGeometryReader { width in
 }
 
 ```
-</div>
+<br><br><br><br><br>
 
 <br>
 
@@ -120,8 +118,6 @@ The official `GeometryReader` can also do this, but the expaning behavior someti
 
 
 <img align="left" src="Img/img4.png" style="height:480px;margin-left:20px;margin-right:40px"/>
-
-<div style="height:480px">
 
 ``` Swift
 // define a header view
@@ -148,9 +144,7 @@ VStack {
 
 The result below shows that the header view occupies the half of the screen because of the **Expanding** behavior of the `GeometryReader`.
 
-</div>
-
-<br>
+<br><br>
 
 Using the `HorizontalGeometryReader`, which has the Hugging behavior in vertical axes:
 
