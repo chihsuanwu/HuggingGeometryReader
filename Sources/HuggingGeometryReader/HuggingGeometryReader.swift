@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A GeometryReader that has hugging sizing behavior.
 @available(iOS 14, macOS 11, *)
 public struct HuggingGeometryReader<Content: View>: View {
 
