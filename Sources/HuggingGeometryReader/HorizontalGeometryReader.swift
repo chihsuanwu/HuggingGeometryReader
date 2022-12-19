@@ -3,14 +3,18 @@ import SwiftUI
 @available(iOS 14, macOS 11, *)
 public struct HorizontalGeometryReader<Content: View>: View {
     
+    private let onChange: ((CGFloat) -> ())?
     private let content: (CGFloat) -> Content
     
-    public init(@ViewBuilder content: @escaping (CGFloat) -> Content) {
+    public init(onChange: ((CGFloat) -> ())? = nil, @ViewBuilder content: @escaping (CGFloat) -> Content) {
+        self.onChange = onChange
         self.content = content
     }
     
     public var body: some View {
-        HuggingGeometryReader { size in
+        HuggingGeometryReader(onChange: {
+            onChange?($0.width)
+        }) { size in
             content(size.width)
                 .frame(maxWidth: .infinity)
         }
@@ -33,6 +37,6 @@ struct HorizontalGeometryReader_Previews: PreviewProvider {
                     .background(Color.blue)
             }
         }
-        .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }
 }

@@ -78,6 +78,16 @@ HuggingGeometryReader { size in
 }
 ```
 
+An `onChange` closure is also provided to perform actions when the size changes, which is useful when passing the size to parent views or viewmodel.
+
+``` swift
+HuggingGeometryReader(onChange: { newSize in
+    // Do something when size changes
+}) { size in
+    // Child Contents
+}
+```
+
 <br>
 
 ## HorizontalGeometryReader
@@ -142,7 +152,7 @@ VStack {
 }
 ```
 
-The result below shows that the header view occupies the half of the screen because of the **Expanding** behavior of the `GeometryReader`.
+The result shows that the header view occupies the half of the screen because of the **Expanding** behavior of the `GeometryReader`.
 
 <br><br>
 

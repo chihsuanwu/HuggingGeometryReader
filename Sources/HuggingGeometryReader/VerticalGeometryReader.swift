@@ -3,14 +3,18 @@ import SwiftUI
 @available(iOS 14, macOS 11, *)
 public struct VerticalGeometryReader<Content: View>: View {
     
+    private let onChange: ((CGFloat) -> ())?
     private let content: (CGFloat) -> Content
     
-    public init(@ViewBuilder content: @escaping (CGFloat) -> Content) {
+    public init(onChange: ((CGFloat) -> ())? = nil, @ViewBuilder content: @escaping (CGFloat) -> Content) {
+        self.onChange = onChange
         self.content = content
     }
     
     public var body: some View {
-        HuggingGeometryReader { size in
+        HuggingGeometryReader(onChange: {
+            onChange?($0.height)
+        }) { size in
             content(size.height)
                 .frame(maxHeight: .infinity)
         }
@@ -33,7 +37,7 @@ struct VerticalGeometryReader_Previews: PreviewProvider {
                     .background(Color.blue)
             }
         }
-        .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
     }
 }
 
