@@ -4,7 +4,7 @@ import SwiftUI
 @available(iOS 14, macOS 11, *)
 public struct HuggingGeometryReader<Content: View>: View {
 
-    @State private var size: CGSize = SizeKey.defaultValue
+    @State private var size: CGSize = CGSize()
     
     private let onChange: ((CGSize) -> ())?
     private let content: (CGSize) -> Content
@@ -16,14 +16,37 @@ public struct HuggingGeometryReader<Content: View>: View {
     
     public var body: some View {
         content(size)
+            .modifier(HuggingGeometryModifier {
+                size = $0
+                onChange?($0)
+            })
+    }
+}
+
+@available(iOS 14, macOS 11, *)
+public extension View {
+    /// Read the geometry of the view.
+    func readGeometry(onChange: @escaping (CGSize) -> ()) -> some View {
+        modifier(HuggingGeometryModifier {
+            onChange($0)
+        })
+    }
+}
+
+@available(iOS 14, macOS 11, *)
+internal struct HuggingGeometryModifier: ViewModifier {
+
+    let onChange: (CGSize) -> ()
+    
+    func body(content: Content) -> some View {
+        content
             .background(
                 GeometryReader { proxy in
                     Color.clear.preference(key: SizeKey.self, value: proxy.size)
                 }
             )
             .onPreferenceChange(SizeKey.self) {
-                size = $0
-                onChange?($0)
+                onChange($0)
             }
     }
     
@@ -43,9 +66,10 @@ struct HuggingGeometryReader_Previews: PreviewProvider {
     struct Preview: View {
         
         @State private var secondSize: CGSize = CGSize()
+        @State private var thirdSize: CGSize = CGSize()
         
         var body: some View {
-            VStack(spacing: 10) {
+            VStack {
                 HuggingGeometryReader { size in
                     Text("Hello, height is \(size.height)")
                         .padding()
@@ -54,12 +78,21 @@ struct HuggingGeometryReader_Previews: PreviewProvider {
                 HuggingGeometryReader(onChange: {
                     secondSize = $0
                 }) { size in
-                    Text("Hello, Second Text")
+                    Text("Hello, Second Text's height is \(size.height)")
                         .padding()
                         .background(Color.yellow)
                 }
                 
                 Text("Second Text's size is \(secondSize.width), \(secondSize.height)")
+                
+                Text("Hello, Third text")
+                    .padding()
+                    .background(Color.orange)
+                    .readGeometry { newSize in
+                        thirdSize = newSize
+                    }
+                
+                Text("Third Text's size is \(thirdSize.width), \(thirdSize.height)")
             }
             .background(Color.red)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))

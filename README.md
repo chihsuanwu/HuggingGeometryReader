@@ -88,6 +88,16 @@ HuggingGeometryReader(onChange: { newSize in
 }
 ```
 
+If you only need to pass the size to parent view, you can use the `readGeometry` modifier:
+
+``` swift
+Text("Hello") // Child contents that need to be measured
+    .readGeometry { newSize in
+        // Do something when size changes
+    }
+
+```
+
 <br>
 
 ## HorizontalGeometryReader
